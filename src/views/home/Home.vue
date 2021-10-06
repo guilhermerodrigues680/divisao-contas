@@ -47,8 +47,6 @@
       </section>
     </main>
 
-    <footer></footer>
-
     <!-- Overlay report -->
     <div class="report" ref="report">
       <table>
@@ -84,6 +82,8 @@
         </tfoot>
       </table>
     </div>
+
+    <footer></footer>
   </div>
 </template>
 
@@ -247,6 +247,7 @@ header {
 
 footer {
   height: 150px;
+  background: #6c63ff;
 }
 
 .report {
