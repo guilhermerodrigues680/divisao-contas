@@ -22,20 +22,20 @@
           <h1>Bem vindo a plataforma de gestão de contas</h1>
           <h2>Tire aqui os relatórios dos custos mensais.</h2>
 
-          <form @submit.prevent="">
+          <form @submit.prevent="makeReport()">
             <label>
               Água
-              <money v-model="price" v-bind="money" type="text" inputmode="numeric" />
+              <money v-model="waterBill" v-bind="money" type="text" inputmode="numeric" />
             </label>
 
             <label>
               Luz
-              <money v-bind="money" type="text" inputmode="numeric" />
+              <money v-model="electricityBill" v-bind="money" type="text" inputmode="numeric" />
             </label>
 
             <label>
               Internet
-              <money v-bind="money" type="text" inputmode="numeric" />
+              <money v-model="internetBill" v-bind="money" type="text" inputmode="numeric" />
             </label>
 
             <button>Gerar Relatório</button>
@@ -45,11 +45,49 @@
     </main>
 
     <footer></footer>
+
+    <!-- Overlay report -->
+    <div class="report" ref="report">
+      <table>
+        <caption>
+          Monthly savings
+        </caption>
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Percentual</th>
+            <th>Savings</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Água</td>
+            <td>2/3</td>
+            <td>{{ (waterBill * 2) / 3 }}</td>
+          </tr>
+          <tr>
+            <td>Luz</td>
+            <td>2/3</td>
+            <td>{{ (electricityBill * 2) / 3 }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>Internet</td>
+            <td>2/3</td>
+            <td>{{ (internetBill * 2) / 3 }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
 import { Money } from "v-money";
+import html2canvas from "html2canvas";
+import filesaver from "file-saver";
 
 const moneyConfig = {
   decimal: ",",
@@ -68,9 +106,27 @@ export default {
   },
 
   data: () => ({
-    price: 123.45,
+    waterBill: 0,
+    electricityBill: 0,
+    internetBill: 0,
     money: moneyConfig,
   }),
+
+  methods: {
+    makeReport() {
+      const el = this.$refs.report;
+      html2canvas(el).then(canvas => {
+        console.debug(canvas);
+        // document.body.appendChild(canvas);
+        canvas.toBlob(blob => {
+          // const url = URL.createObjectURL(blob);
+          // window.open(url, "_blank");
+          console.debug(blob);
+          filesaver.saveAs(blob, "report.png");
+        }, "image/png");
+      });
+    },
+  },
 };
 </script>
 
@@ -181,5 +237,23 @@ header {
 
 footer {
   height: 150px;
+}
+
+.report {
+  color: red;
+
+  table {
+    border: thin solid red;
+    border-collapse: collapse;
+
+    caption {
+      border: thin solid red;
+    }
+
+    tr,
+    td {
+      border: thin solid red;
+    }
+  }
 }
 </style>
