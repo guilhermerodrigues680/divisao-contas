@@ -1,0 +1,5 @@
+/* https://stackoverflow.com/questions/49518277/import-css-from-node-modules-in-webpack */
+@import '~modern-normalize/modern-normalize.css';
+
+/* Import all local modules */
+@import './preflight.scss';
