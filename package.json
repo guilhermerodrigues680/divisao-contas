@@ -5,8 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "gh:build": "vue-cli-service build --dest docs",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "gh:build": "vue-cli-service build --dest docs"
   },
   "dependencies": {
     "@fontsource/roboto": "^4.5.1",
@@ -16,11 +16,13 @@
     "modern-normalize": "^1.1.0",
     "v-money": "^0.8.1",
     "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
     "vue-the-mask": "^0.11.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "^4.5.13",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",

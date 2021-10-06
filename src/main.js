@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import "@/styles/global.scss";
+import router from './router'
 
 Vue.config.productionTip = false;
 
@@ -9,5 +10,6 @@ Vue.config.productionTip = false;
 document.body.ontouchstart = () => {};
 
 new Vue({
-  render: h => h(App),
+  router,
+  render: h => h(App)
 }).$mount("#app");
