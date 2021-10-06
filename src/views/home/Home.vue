@@ -1,5 +1,7 @@
 <template>
   <div class="home">
+    <Menu v-model="menu" />
+
     <header>
       <div class="header-container">
         <svg
@@ -8,6 +10,7 @@
           viewBox="0 0 48 48"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          @click="openMenu()"
         >
           <path d="M36 20H12V22H36V20Z" fill="#6c63ff" />
           <path d="M36 26H20V28H36V26Z" fill="#6c63ff" />
@@ -88,6 +91,7 @@
 import { Money } from "v-money";
 import html2canvas from "html2canvas";
 import filesaver from "file-saver";
+import Menu from "./components/Menu.vue";
 
 const moneyConfig = {
   decimal: ",",
@@ -103,6 +107,7 @@ export default {
 
   components: {
     Money,
+    Menu,
   },
 
   data: () => ({
@@ -110,6 +115,7 @@ export default {
     electricityBill: 0,
     internetBill: 0,
     money: moneyConfig,
+    menu: false,
   }),
 
   methods: {
@@ -125,6 +131,10 @@ export default {
           filesaver.saveAs(blob, "report.png");
         }, "image/png");
       });
+    },
+
+    openMenu() {
+      this.menu = true;
     },
   },
 };
