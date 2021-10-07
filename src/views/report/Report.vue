@@ -1,40 +1,40 @@
 <template>
   <div class="view">
-    Report
-
     <!-- Overlay report -->
     <div class="report" ref="report">
       <table>
         <caption>
           Monthly savings
         </caption>
+
         <thead>
           <tr>
-            <th>Month</th>
-            <th>Percentual</th>
-            <th>Savings</th>
+            <th rowspan="2">Mês</th>
+            <th rowspan="2">Descrição</th>
+            <th rowspan="2">Valor</th>
+            <th colspan="4">
+              Valor para partes
+            </th>
+          </tr>
+
+          <tr>
+            <th>% Guilherme</th>
+            <th>R$</th>
+
+            <th>% Graça</th>
+            <th>R$</th>
           </tr>
         </thead>
 
         <tbody>
           <tr>
-            <td>Água</td>
-            <td>2/3</td>
-            <td>{{ (waterBill * 2) / 3 }}</td>
+            <td rowspan="0">Setembro</td>
           </tr>
-          <tr>
-            <td>Luz</td>
-            <td>2/3</td>
-            <td>{{ (electricityBill * 2) / 3 }}</td>
-          </tr>
+
+          <ReportTr billName="Água" :billValue="waterBill" />
+          <ReportTr billName="Luz" :billValue="electricityBill" />
+          <ReportTr billName="Internet" :billValue="internetBill" />
         </tbody>
-        <tfoot>
-          <tr>
-            <td>Internet</td>
-            <td>2/3</td>
-            <td>{{ (internetBill * 2) / 3 }}</td>
-          </tr>
-        </tfoot>
       </table>
     </div>
 
@@ -45,14 +45,47 @@
 <script>
 import html2canvas from "html2canvas";
 import filesaver from "file-saver";
+import { fraction, number, round } from "mathjs";
+import ReportTr from "./components/ReportTr.vue";
 
 export default {
   name: "Report",
+
+  components: {
+    ReportTr,
+  },
 
   props: {
     waterBill: Number,
     electricityBill: Number,
     internetBill: Number,
+  },
+
+  data: () => ({
+    waterBillPercent: 0,
+  }),
+
+  watch: {
+    waterBillPercent(v) {
+      console.debug(v);
+    },
+  },
+
+  created() {
+    console.debug("beforeCreate");
+    console.debug(this.$props);
+
+    const isNullOrUndefined = v => v === null || v === undefined;
+    if (
+      isNullOrUndefined(this.waterBill) ||
+      isNullOrUndefined(this.electricityBill) ||
+      isNullOrUndefined(this.internetBill)
+    ) {
+      this.$router.push("/");
+    }
+
+    console.debug(fraction, number);
+    this.waterBillPercent = round(number(fraction("2/3")), 2);
   },
 
   methods: {
@@ -70,6 +103,15 @@ export default {
         filesaver.saveAs(blob, "report.png");
       }, "image/png");
     },
+
+    up(event) {
+      console.debug(event);
+      this.waterBillPercent = 0;
+    },
+
+    as(event) {
+      console.debug(event);
+    },
   },
 };
 </script>
@@ -83,16 +125,19 @@ export default {
   color: red;
 
   table {
-    border: thin solid red;
     border-collapse: collapse;
 
-    caption {
+    &,
+    caption,
+    th,
+    & /deep/ tr,
+    & /deep/ td {
       border: thin solid red;
+      text-align: center;
     }
 
-    tr,
-    td {
-      border: thin solid red;
+    th {
+      padding: 0.5rem 1rem;
     }
   }
 }

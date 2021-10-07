@@ -4,6 +4,8 @@
 
     <header>
       <div class="header-container">
+        <div class="logo" @click="goHome()">HOME</div>
+
         <svg
           width="48"
           height="48"
@@ -36,6 +38,10 @@ export default {
     openMenu() {
       this.menu = true;
     },
+
+    goHome() {
+      this.$router.push("/");
+    },
   },
 };
 </script>
@@ -47,10 +53,18 @@ header {
 
   .header-container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     margin: 0rem 1.5rem;
     height: 100%;
+
+    .logo {
+      color: #ffffff;
+      font-weight: 100;
+      border-radius: 4px;
+      padding: 0.5rem;
+      border: thin solid #ffffff;
+    }
   }
 }
 </style>
