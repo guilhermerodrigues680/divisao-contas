@@ -35,7 +35,7 @@ export default {
 
   methods: {
     appHeight() {
-      console.debug(this.$el);
+      // console.debug(this.$el);
       this.$el.style.setProperty("--app-height", `${window.innerHeight}px`);
       this.log.push(`${new Date().toLocaleString()} | ${window.innerHeight}px`);
     },
