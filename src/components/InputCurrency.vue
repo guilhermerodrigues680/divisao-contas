@@ -5,18 +5,18 @@
     @change="change($event)"
     type="text"
     inputmode="numeric"
-    v-money="vmoneyPercentConfig"
+    v-money="vmoneyCurrencyConfig"
   />
 </template>
 
 <script>
 import { VMoney } from "v-money";
 
-const vmoneyPercentConfig = {
+const vmoneyCurrencyConfig = {
   decimal: ",",
   thousands: ".",
-  prefix: "",
-  suffix: " %",
+  prefix: "R$ ",
+  suffix: "",
   precision: 2,
 };
 
@@ -30,7 +30,7 @@ export default {
   },
 
   data: () => ({
-    vmoneyPercentConfig,
+    vmoneyCurrencyConfig,
   }),
 
   methods: {
@@ -50,20 +50,16 @@ export default {
     },
 
     change(event) {
-      // FIXME: Corrigir efeito ao colar
-      // FIXME: Corrigir ao digitar numero negativo
-      const before = this.value;
+      // const before = this.value;
       event.target.value = event.target.value.replace(/-/, "");
       let newValue = event.target.value;
-      const numericValue = this.numericValue(newValue);
+      // const numericValue = this.numericValue(newValue);
 
-      // console.debug("change", event, newValue, numericValue);
-      if (numericValue > 100) {
-        // console.debug("numericValue > 100");
-        event.target.value = before;
-        this.$emit("input", event.target.value);
-        return;
-      }
+      // if (numericValue > 100) {
+      //   event.target.value = before;
+      //   this.$emit("input", event.target.value);
+      //   return;
+      // }
 
       this.$emit("input", newValue);
     },

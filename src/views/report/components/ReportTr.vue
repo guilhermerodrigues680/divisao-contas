@@ -4,19 +4,18 @@
     <td>{{ billValue }}</td>
 
     <td>
-      <InputPercent v-model="guilherme.percent" />
+      <InputPercent v-model="guilherme.percent" @input="updatePercent('guilherme')" />
     </td>
     <td>
-      <!-- <InputPercent v-model="guilherme.value" /> -->
-      {{ guilherme.percent }}
-    </td>
-
-    <td>
-      <InputPercent v-model="graca.percent" />
+      <InputCurrency v-model="guilherme.value" />
     </td>
 
     <td>
-      <InputPercent v-model="graca.value" />
+      <InputPercent v-model="graca.percent" @input="updatePercent('graca')" />
+    </td>
+
+    <td>
+      <InputCurrency v-model="graca.value" />
     </td>
   </tr>
 </template>
@@ -24,12 +23,14 @@
 <script>
 import { round } from "mathjs";
 import InputPercent from "@/components/InputPercent.vue";
+import InputCurrency from "@/components/InputCurrency.vue";
 
 export default {
   name: "ReportTr",
 
   components: {
     InputPercent,
+    InputCurrency,
   },
 
   props: {
@@ -51,6 +52,46 @@ export default {
   created() {
     this.guilherme.value = round(this.billValue * (this.guilherme.percent / 100), 2);
     this.graca.value = round(this.billValue * (this.graca.percent / 100), 2);
+  },
+
+  methods: {
+    numericValue(value) {
+      if (typeof value === "number") {
+        return value;
+      }
+
+      if (!value) {
+        value = "";
+      }
+
+      return +value
+        .replace(/%/g, "")
+        .replace(/\./g, "")
+        .replace(/,/g, ".");
+    },
+
+    updatePercent(person) {
+      console.debug(person);
+      switch (person) {
+        case "guilherme":
+          {
+            const percent = this.numericValue(this.guilherme.percent);
+            this.guilherme.value = round(this.billValue * (percent / 100), 2);
+          }
+          break;
+        case "graca":
+          {
+            const percent = this.numericValue(this.guilherme.percent);
+            this.graca.value = round(this.billValue * (percent / 100), 2);
+          }
+          break;
+        default:
+          {
+            console.debug("Pessoa desconhecida", person);
+          }
+          break;
+      }
+    },
   },
 };
 </script>
