@@ -13,7 +13,7 @@
             <div>{{ payers[bill.payer].name }}</div>
             <div>
               <span v-for="(percent, payer) in bill.formOfDivision" :key="payer">
-                {{ payer }}: {{ percent | percent }}
+                {{ payers[payer].name }}: {{ percent | percent }}
               </span>
             </div>
           </div>
